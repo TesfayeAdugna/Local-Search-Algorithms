@@ -1,30 +1,6 @@
-from math import atan2, cos, sin, sqrt
 import random
-
-# Knapsack problem using hill climbing algorithm code starts here.
-class LoadGraph_knapsack:
-    
-    def __init__(self, filename):
-        self.ItemCollection = {}
-        self.max_weight = 0
-        self.items = []
-        i = 0
-        with open(filename) as file:
-            for line in file:
-                i+=1
-                if i == 2:
-                    continue
-                con = line.split(",")
-                if i>2:
-                    self.ItemCollection[i-3] = con[0]
-                if len(con) < 3:
-                    self.max_weight = int(con[0])
-                    continue
-                temp =[]
-                temp.append(float(con[1]))
-                temp.append(int(con[2]))
-                self.items.append(temp)
-
+from LoadKnapsack import LoadGraph_knapsack
+from LoadTSP import LoadGraph_TSP
 
 class Knapsack:
     
@@ -92,33 +68,6 @@ class Knapsack:
 
 
 # Travelling salesman problem algorithm starts here.
-class LoadGraph_TSP:
-
-    def __init__(self, filename):
-        self.CityCollection = {}
-        self.cities = {}
-        with open(filename) as file:
-            i = 0
-            for line in file:
-                con = line.split()
-                self.CityCollection[i] = con[0]
-                self.cities[con[0]] = (float(con[1]), float(con[2]))
-                i += 1
-
-    def create_problem(self):
-        problem = []
-        for i in self.cities:
-            temp = []
-            for j in self.cities:
-                Haversine = sin((self.cities[j][0]-self.cities[i][0]) / 2)**2 + cos(self.cities[j][0]) * cos(self.cities[i][0]) * sin((self.cities[j][1]-self.cities[i][1]) / 2)**2
-                c = 2 * atan2(sqrt(Haversine), sqrt(1 - Haversine))
-                temp.append(6373.0 * c)
-
-            problem.append(temp)
-
-        return problem
-
-
 class TSP:
 
     def __init__(self):
