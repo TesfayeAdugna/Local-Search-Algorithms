@@ -1,6 +1,7 @@
 import random
 from LoadKnapsack import LoadGraph_knapsack
 from LoadTSP import LoadGraph_TSP
+import matplotlib.pyplot as plt
 
 class Knapsack:
     
@@ -55,14 +56,16 @@ class Knapsack:
         currentRouteLength = self.calcRouteLength(knapsack, currentSolution)
         neighbours = self.findNeighbours(currentSolution)
         bestNeighbour, bestNeighbourRouteLength = self.findBestNeighbour(knapsack, neighbours)
-
+        lst = []
+        lst.append(currentRouteLength)
         while bestNeighbourRouteLength > currentRouteLength:
             currentSolution = bestNeighbour
             currentRouteLength = bestNeighbourRouteLength
+            lst.append(currentRouteLength)
             neighbours = self.findNeighbours(currentSolution)
             bestNeighbour, bestNeighbourRouteLength = self.findBestNeighbour(knapsack, neighbours)
 
-        return currentSolution, currentRouteLength
+        return currentSolution, currentRouteLength, lst
 
 # Knapsack problem using hill climbing algorithm ends here.
 
@@ -112,14 +115,16 @@ class TSP:
         currentRouteLength = self.calcRouteLength(tsp, currentSolution)
         neighbours = self.findNeighbours(currentSolution)
         bestNeighbour, bestNeighbourRouteLength = self.findBestNeighbour(tsp, neighbours)
-
+        lst = []
+        lst.append(currentRouteLength)
         while bestNeighbourRouteLength < currentRouteLength:
             currentSolution = bestNeighbour
             currentRouteLength = bestNeighbourRouteLength
+            lst.append(currentRouteLength)
             neighbours = self.findNeighbours(currentSolution)
             bestNeighbour, bestNeighbourRouteLength = self.findBestNeighbour(tsp, neighbours)
 
-        return currentSolution, currentRouteLength
+        return currentSolution, currentRouteLength, lst
 
 # Travelling sales man problem ends here.
 
@@ -128,17 +133,22 @@ if __name__ == "__main__":
     # knapsack problem test.
     # l = LoadGraph_knapsack("Knapsackgraph_files/texts1x.txt")
     # k = Knapsack()
-    # Items, TotalValue = k.hillClimbing(l.items, l.max_weight)
+    # Items, TotalValue, lst = k.hillClimbing(l.items, l.max_weight)
+    # x = [i for i in range(len(lst))]
+    # plt.plot(x, lst)
     # answer = []
     # for i in Items:
     #     answer.append(l.ItemCollection[i])
     # print("items: ", answer, "\nTotal value: ", TotalValue)
+    # plt.show()
 
     # Travelling sales man problem test
     t = TSP()
-    l = LoadGraph_TSP("TSPgraph_files/texts2x.txt")
+    l = LoadGraph_TSP("TSPgraph_files/texts3x.txt")
     tsp = l.create_problem()
-    Cities, totallength = t.hillClimbing(tsp)
+    Cities, totallength, lst = t.hillClimbing(tsp)
+    x = [x for x in range(len(lst))]
+    plt.plot(x, lst)
     answer = []
     for i in Cities:
         answer.append(l.CityCollection[i])
@@ -146,3 +156,4 @@ if __name__ == "__main__":
     print("path: ", end="")
     [print(x, "-->", end="") for x in answer]
     print("\nTotal Length: ", totallength)
+    plt.show()

@@ -1,4 +1,4 @@
-10
+30
 item,weight,value
 phone,0.19,1000
 Laptop,1.1,700
